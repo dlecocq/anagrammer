@@ -1,6 +1,7 @@
 #define BUILDING_NODE_EXTENSION
 #include <node.h>
 
+#include <cstdlib>
 #include <iostream>
 
 #include "anagram-node-js.h"
@@ -131,7 +132,7 @@ Handle<Value> Node::Load(const Arguments& args) {
 void Node::Init(Handle<Object> target) {
 	Local<FunctionTemplate> tpl = FunctionTemplate::New(New);
 	tpl->SetClassName(String::NewSymbol("Node"));
-	tpl->InstanceTemplate()->SetInternalFieldCount(0);
+	tpl->InstanceTemplate()->SetInternalFieldCount(1);
 	
 	tpl->PrototypeTemplate()->Set(String::NewSymbol("insert"),
 		FunctionTemplate::New(Insert)->GetFunction());
