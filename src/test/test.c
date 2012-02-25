@@ -35,7 +35,7 @@ static char * test_anagrams() {
 	insert(&root, "hello");
 	insert(&root, "hell");
 	insert(&root, "he");
-	mu_assert("Finds anagrams", anagrams(&root, "hello", noop, NULL) == 3);
+	mu_assert("Finds anagrams", anagrams(&root, "hello", 2, noop, NULL) == 3);
 	destruct_node(&root);
 	return 0;
 }
@@ -67,9 +67,9 @@ static char * test_duplicates() {
 	anagram_node root;
 	initialize_node(&root, NULL);
 	insert(&root, "hello");
-	mu_assert("Exactly one anagram found when sorted", anagrams(&root, "ehllo", noop, NULL) == 1);
-	mu_assert("Exactly one anagram found when unsorted", anagrams(&root, "lehlo", noop, NULL) == 1);
-	mu_assert("Exactly one anagram found when reversed", anagrams(&root, "ollhe", noop, NULL) == 1);
+	mu_assert("Exactly one anagram found when sorted",   anagrams(&root, "ehllo", 5, noop, NULL) == 1);
+	mu_assert("Exactly one anagram found when unsorted", anagrams(&root, "lehlo", 5, noop, NULL) == 1);
+	mu_assert("Exactly one anagram found when reversed", anagrams(&root, "ollhe", 5, noop, NULL) == 1);
 	destruct_node(&root);
 	return 0;
 }
@@ -86,6 +86,21 @@ static char * test_loadFile() {
 	return 0;
 }
 
+/* Test repeats
+ *
+ * I've encountered a bug where I get a very large number of 
+ * anagrams for words with lots of repeat letters, and so
+ * I'd like to make sure that, well, I don't. The worst case
+ * that I've found to date is 'tempestuousnesses' */
+static char * test_repeats() {
+   anagram_node root;
+   initialize_node(&root, NULL);
+   insert(&root, "tempest");
+   mu_assert("Repeated anagrams found", anagrams(&root, "tesptem", 0, noop, NULL) == 1);
+   destruct_node(&root);
+   return 0;
+}
+
 static char * all_tests() {
 	mu_run_test(test_insert_contains);
 	mu_run_test(test_insert_multiple);
@@ -94,6 +109,7 @@ static char * all_tests() {
 	mu_run_test(test_delete);
 	mu_run_test(test_duplicates);
 	mu_run_test(test_loadFile);
+   mu_run_test(test_repeats);
 	return 0;
 }
 

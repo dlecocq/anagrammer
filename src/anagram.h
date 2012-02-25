@@ -40,13 +40,14 @@ int _contains(anagram_node * node, const char * str, unsigned int len);
 int  contains(anagram_node * node, const char * str);
 
 /* Find all anagrams */
-unsigned int anagrams(anagram_node * node, const char * str, found_callback cb, void * data);
+unsigned int anagrams(anagram_node * node, const char * str, unsigned int min, found_callback cb, void * data);
 /* This, however, is a little helper that will make it easier to 
  * do some of the searching. It allows characters to be swapped in
  * place, which makes it amenable to some performance gains. */
 unsigned int _anagrams(anagram_node * node,
 		char * str, unsigned int len,
 		char * buf, unsigned int buf_len,
+		unsigned int min,
 		found_callback cb, void * data);
 
 /* =================================================

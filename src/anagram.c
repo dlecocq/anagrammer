@@ -3,6 +3,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <assert.h>
 
 /* This is the base character code we'll subtract off of 
  * every input string when determining its index into nodes,
@@ -111,7 +112,7 @@ int __comparator(const void* a, const void* b) {
 	return (*(char*)a - *(char*)b);
 }
 
-unsigned int anagrams(anagram_node * node, const char * str, found_callback cb, void * data) {
+unsigned int anagrams(anagram_node * node, const char * str, unsigned int min, found_callback cb, void * data) {
 	unsigned int len = strlen(str);
 	// Make a copy of the string that we can modify, and then sort it
 	char * _str = (char*)(malloc(len));
@@ -120,53 +121,65 @@ unsigned int anagrams(anagram_node * node, const char * str, found_callback cb, 
 	// Make a buffer where we'll store the string
 	char * _buf = (char*)(malloc(len + 1));
 	// Return
-	return _anagrams(node, _str, len, _buf, 0, cb, data);
+	unsigned int r = _anagrams(node, _str, len, _buf, 0, min, cb, data);
+   free(_str);
+   free(_buf);
+   return r;
 }
 
 unsigned int _anagrams(anagram_node * node,
 		char * str, unsigned int len,
 		char * buf, unsigned int buf_len,
+		unsigned int min,
 		found_callback cb, void * data) {
+	
 	if (len == 0) {
+	   if (node->valid && buf_len >= min) {
+         buf[buf_len+1] = 0;
+         cb(buf, buf_len, data);
+         return 1;
+	   }
+      return 0;
+	}
+	
+	char *       tmp   = (char *)(malloc(len-1));
+	unsigned int sum   = 0;
+	unsigned int count = 0;
+	unsigned int index = 0;
+	
+	if (node->valid && buf_len >= min) {
 		buf[buf_len+1] = 0;
 		cb(buf, buf_len, data);
-		return node->valid;
-	} else {
-		char         tmp   = 'a';
-		unsigned int sum   = 0;
-		unsigned int count = 0;
-		unsigned int index = 0;
-		
-		if (node->valid) {
-			buf[buf_len+1] = 0;
-			cb(buf, buf_len, data);
-			sum += 1;
-		}
-		
-		// Loop through each of the letters and search there.
-		for (count = 0; count < len; ++count) {
-			// If this letter is a repeat of the last letter, skip it
-			if (count && str[count] == str[count-1]) {
-				continue;
-			} else {
-				/* Otherwise, swap the current letter with the first one,
-				 * then return anagrams, and then unswap them */
-				index = (unsigned int)(str[count]) - base;
-				if (node->nodes[index] != NULL) {
-					// Save for later
-					tmp = str[count];
-					str[count] = str[0];
-					// Add this character to the buffer
-					buf[buf_len] = tmp;
-					// Find any sub-anagrams
-					sum += _anagrams(node->nodes[index], (char*)(&str[1]), len-1, buf, buf_len + 1, cb, data);
-					// Unswap
-					str[count] = tmp;
-				}
-			}
-		}
-		return sum;
+		sum += 1;
 	}
+	
+   memcpy(tmp, (char*)(&str[1]), len-1);
+	// Loop through each of the letters and search there.
+	for (count = 0; count < len; ++count) {
+      // We should skip over repeated letters
+      if (count) {
+         tmp[count-1] = str[count-1];
+         if (str[count] == str[count-1]) {
+            continue;
+         }
+      }
+      
+      index = (unsigned int)(str[count]) - base;
+      //printf("Count: %i | Index: %i | Length: %i | BufLen: %i\n", count, index, len, buf_len);
+      if (index < 26 && node->nodes[index] != NULL) {
+			// Add this character to the buffer
+			buf[buf_len] = str[count];
+			// Find any sub-anagrams
+         //printf("Sub-calling _anagrams\n");
+			sum += _anagrams(node->nodes[index], tmp, len-1, buf, buf_len + 1, min, cb, data);
+         buf[buf_len] = 0;
+         //printf("Returned.\n");
+         //printf("Chose index %i (%c) out of %s to append to %s, passing %s on\n", count, str[count], str, buf, tmp);
+		}
+	}
+	
+   free(tmp);
+	return sum;
 }
 
 void loadFile(anagram_node * node, const char * path) {
