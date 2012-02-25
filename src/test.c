@@ -56,7 +56,7 @@ static char * test_delete() {
 	mu_assert("Empty node is leaf", leaf(&root));
 	insert(&root, "hello");
 	mu_assert("Full node is not leaf", !leaf(&root));
-	delete(&root, "hello");
+	del(&root, "hello");
 	mu_assert("Deleted node is leaf", leaf(&root));
 	destruct_node(&root);
 	return 0;

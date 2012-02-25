@@ -32,8 +32,8 @@ anagram_node * _insert(anagram_node * node, const char * str, unsigned int len);
 anagram_node *  insert(anagram_node * node, const char * str);
 
 /* Remove a string */
-void _delete(anagram_node * node, const char * str, unsigned int len);
-void  delete(anagram_node * node, const char * str);
+void _del(anagram_node * node, const char * str, unsigned int len);
+void  del(anagram_node * node, const char * str);
 
 /* Test for containment */
 int _contains(anagram_node * node, const char * str, unsigned int len);

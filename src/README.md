@@ -13,10 +13,10 @@ declare a single such node as the root of a `trie`, and then make queries
 on that node, and not care about any of the other leaf or intermediate
 nodes. There are a few important functions to call out as part of the API:
 
-1. __insert__ -- add a string to the repository
-1. __delete__ -- remove a string
-1. __contains__ -- test for containment of a particular string
-1. __anagrams__ -- find all combinations of the provided letters in the repository
+1. `insert` -- add a string to the repository
+1. `del` -- remove a string
+1. `contains` -- test for containment of a particular string
+1. `anagrams` -- find all combinations of the provided letters in the repository
 
 Example
 =======
@@ -54,7 +54,7 @@ Perhaps this library is best demonstrated by example.
 		contains(&root, "foo" ); // 0
 	
 		// We didn't actually mean to add "howdy." Delete!
-		delete(&root, "howdy");
+		del(&root, "howdy");
 		
 		// Let's find some anagrams! We'll provide the callback we 
 		// described above. It will be invoked for each found anagram,

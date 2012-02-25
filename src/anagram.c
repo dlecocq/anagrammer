@@ -60,11 +60,11 @@ anagram_node * _insert(anagram_node * node, const char * str, unsigned int len) 
 	}
 }
 
-void delete(anagram_node * node, const char * str) {
-	return _delete(node, str, strlen(str));
+void del(anagram_node * node, const char * str) {
+	return _del(node, str, strlen(str));
 }
 
-void _delete(anagram_node * node, const char * str, unsigned int len) {
+void _del(anagram_node * node, const char * str, unsigned int len) {
 	if (len == 0) {
 		node->valid = 0;
 	} else {
@@ -73,9 +73,9 @@ void _delete(anagram_node * node, const char * str, unsigned int len) {
 			return;
 		} else {
 			if (len == 1) {
-				_delete(node->nodes[index], NULL, len-1);
+				_del(node->nodes[index], NULL, len-1);
 			} else {
-				_delete(node->nodes[index], (const char*)(&str[1]), len-1);
+				_del(node->nodes[index], (const char*)(&str[1]), len-1);
 			}
 			/* After we've deleted from the subtrees, we should 
 			 * see if the node we just deleted was a leaf. If so,
