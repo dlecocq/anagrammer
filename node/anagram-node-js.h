@@ -20,6 +20,7 @@ class Node : public node::ObjectWrap {
 		static v8::Handle<v8::Value> Del(const v8::Arguments& args);
 		static v8::Handle<v8::Value> Contains(const v8::Arguments& args);
 		static v8::Handle<v8::Value> Anagrams(const v8::Arguments& args);
+		static v8::Handle<v8::Value> Load(const v8::Arguments& args);
 		
 		anagram_node _node;
 };
