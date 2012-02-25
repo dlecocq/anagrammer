@@ -111,7 +111,7 @@ int __comparator(const void* a, const void* b) {
 	return (*(char*)a - *(char*)b);
 }
 
-unsigned int anagrams(anagram_node * node, const char * str, found_callback cb) {
+unsigned int anagrams(anagram_node * node, const char * str, found_callback cb, void * data) {
 	unsigned int len = strlen(str);
 	// Make a copy of the string that we can modify, and then sort it
 	char * _str = (char*)(malloc(len));
@@ -120,16 +120,16 @@ unsigned int anagrams(anagram_node * node, const char * str, found_callback cb) 
 	// Make a buffer where we'll store the string
 	char * _buf = (char*)(malloc(len + 1));
 	// Return
-	return _anagrams(node, _str, len, _buf, 0, cb);
+	return _anagrams(node, _str, len, _buf, 0, cb, data);
 }
 
 unsigned int _anagrams(anagram_node * node,
 		char * str, unsigned int len,
 		char * buf, unsigned int buf_len,
-		found_callback cb) {
+		found_callback cb, void * data) {
 	if (len == 0) {
 		buf[buf_len+1] = 0;
-		cb(buf, buf_len);
+		cb(buf, buf_len, data);
 		return node->valid;
 	} else {
 		char         tmp   = 'a';
@@ -139,7 +139,7 @@ unsigned int _anagrams(anagram_node * node,
 		
 		if (node->valid) {
 			buf[buf_len+1] = 0;
-			cb(buf, buf_len);
+			cb(buf, buf_len, data);
 			sum += 1;
 		}
 		
@@ -159,7 +159,7 @@ unsigned int _anagrams(anagram_node * node,
 					// Add this character to the buffer
 					buf[buf_len] = tmp;
 					// Find any sub-anagrams
-					sum += _anagrams(node->nodes[index], (char*)(&str[1]), len-1, buf, buf_len + 1, cb);
+					sum += _anagrams(node->nodes[index], (char*)(&str[1]), len-1, buf, buf_len + 1, cb, data);
 					// Unswap
 					str[count] = tmp;
 				}

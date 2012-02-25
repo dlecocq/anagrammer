@@ -31,7 +31,7 @@ Perhaps this library is best demonstrated by example.
 	// of callback functions. I don't know what you're going to
 	// be doing with these anagrams, so I'm not going to declare
 	// an array of results if you don't need them.
-	void cb(const char * str, unsigned int str_len) {
+	void cb(const char * str, unsigned int str_len, void * data) {
 		printf("Found anagram: %s", str);
 	}
 	
@@ -59,7 +59,7 @@ Perhaps this library is best demonstrated by example.
 		// Let's find some anagrams! We'll provide the callback we 
 		// described above. It will be invoked for each found anagram,
 		// and this will return the total number of anagrams found
-		anagrams(&root, "tpso", cb); // There are 6 anagrams
+		anagrams(&root, "tpso", cb, NULL); // There are 6 anagrams
 	
 		// And lastly, you should clean up after yourself
 		destruct_node(&root);

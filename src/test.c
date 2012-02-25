@@ -28,14 +28,14 @@ static char * test_insert_multiple() {
 	return 0;
 }
 
-void noop(const char * str, unsigned int len) {}
+void noop(const char * str, unsigned int len, void * data) {}
 static char * test_anagrams() {
 	anagram_node root;
 	initialize_node(&root, NULL);
 	insert(&root, "hello");
 	insert(&root, "hell");
 	insert(&root, "he");
-	mu_assert("Finds anagrams", anagrams(&root, "hello", noop) == 3);
+	mu_assert("Finds anagrams", anagrams(&root, "hello", noop, NULL) == 3);
 	destruct_node(&root);
 	return 0;
 }
@@ -67,9 +67,9 @@ static char * test_duplicates() {
 	anagram_node root;
 	initialize_node(&root, NULL);
 	insert(&root, "hello");
-	mu_assert("Exactly one anagram found when sorted", anagrams(&root, "ehllo", noop) == 1);
-	mu_assert("Exactly one anagram found when unsorted", anagrams(&root, "lehlo", noop) == 1);
-	mu_assert("Exactly one anagram found when reversed", anagrams(&root, "ollhe", noop) == 1);
+	mu_assert("Exactly one anagram found when sorted", anagrams(&root, "ehllo", noop, NULL) == 1);
+	mu_assert("Exactly one anagram found when unsorted", anagrams(&root, "lehlo", noop, NULL) == 1);
+	mu_assert("Exactly one anagram found when reversed", anagrams(&root, "ollhe", noop, NULL) == 1);
 	destruct_node(&root);
 	return 0;
 }
