@@ -1,5 +1,0 @@
-*.o
-src/*.dSYM/*
-driver
-test
-

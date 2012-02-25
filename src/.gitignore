@@ -1,0 +1,6 @@
+*.o
+*.dSYM/*
+test/test
+test/*.dSYM/*
+driver
+

@@ -1,7 +1,7 @@
 /* Unit tests */
 
 #include "minunit.h"
-#include "anagram.h"
+#include "../anagram.h"
 
 #include <stdio.h>
 
