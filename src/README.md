@@ -18,6 +18,9 @@ nodes. There are a few important functions to call out as part of the API:
 1. `contains` -- test for containment of a particular string
 1. `anagrams` -- find all combinations of the provided letters in the repository
 
+In addition, there's also a convenience method to read in space-separated
+words from a file, called `loadFile`
+
 Example
 =======
 
@@ -60,6 +63,11 @@ Perhaps this library is best demonstrated by example.
 		// described above. It will be invoked for each found anagram,
 		// and this will return the total number of anagrams found
 		anagrams(&root, "tpso", cb, NULL); // There are 6 anagrams
+		
+		// Actually, I have a list of space (newline, tab, space)
+		// separated words stored in dictionary.txt. I'll just use that!
+		loadFile(&root, "dictionary.txt");
+		anagrams(&root, "onomotopoeia", cb, NULL);
 	
 		// And lastly, you should clean up after yourself
 		destruct_node(&root);
