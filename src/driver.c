@@ -11,9 +11,9 @@ int main() {
 	anagram_node root;
 	initialize_node(&root, NULL);
 	
-	insert(&root, "hello");
-		
-	printf("Found %i\n", anagrams(&root, "olelh", cb, NULL));
+   insert(&root, "hello");
+   anagrams(&root, "hello", 5, cb, NULL);
 	
+   destruct_node(&root);
 	return 0;
 }
