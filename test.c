@@ -69,7 +69,7 @@ static char * test_duplicates() {
 	insert(&root, "hello");
 	mu_assert("Exactly one anagram found when sorted", anagrams(&root, "ehllo", noop) == 1);
 	mu_assert("Exactly one anagram found when unsorted", anagrams(&root, "lehlo", noop) == 1);
-	mu_assert("Exactly one anagram found when unsorted", anagrams(&root, "ollhe", noop) == 1);
+	mu_assert("Exactly one anagram found when reversed", anagrams(&root, "ollhe", noop) == 1);
 	destruct_node(&root);
 	return 0;
 }

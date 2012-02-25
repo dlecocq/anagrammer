@@ -10,10 +10,6 @@
  * string. */
 const unsigned int base = 97;
 
-int __comparator(const void* a, const void* b) {
-	return (*(int*)a - *(int*)b);
-}
-
 void initialize_node(anagram_node * node, anagram_node * parent) {
 	unsigned int i = 0;
 	for (i = 0; i < 26; ++i) {
@@ -109,6 +105,10 @@ int _contains(anagram_node * node, const char * str, unsigned int len) {
 			return _contains(node->nodes[index], (const char*)(&str[1]), len-1);
 		}
 	}
+}
+
+int __comparator(const void* a, const void* b) {
+	return (*(char*)a - *(char*)b);
 }
 
 unsigned int anagrams(anagram_node * node, const char * str, found_callback cb) {

@@ -13,7 +13,7 @@ int main() {
 	
 	insert(&root, "hello");
 		
-	printf("Found %i\n", anagrams(&root, "ollhe", cb));
+	printf("Found %i\n", anagrams(&root, "olelh", cb));
 	
 	return 0;
 }
