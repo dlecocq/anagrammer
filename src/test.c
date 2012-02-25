@@ -74,6 +74,18 @@ static char * test_duplicates() {
 	return 0;
 }
 
+// Make sure that we can correctly read from a file
+static char * test_loadFile() {
+	anagram_node root;
+	initialize_node(&root, NULL);
+	loadFile(&root, "test-dictionary.txt");
+	mu_assert("Found 'spot' in dictionary", contains(&root, "spot"));
+	mu_assert("Found 'your' in dictionary", contains(&root, "your"));
+	mu_assert("Found 'name' in dictionary", contains(&root, "name"));
+	destruct_node(&root);
+	return 0;
+}
+
 static char * all_tests() {
 	mu_run_test(test_insert_contains);
 	mu_run_test(test_insert_multiple);
@@ -81,6 +93,7 @@ static char * all_tests() {
 	mu_run_test(test_leaf);
 	mu_run_test(test_delete);
 	mu_run_test(test_duplicates);
+	mu_run_test(test_loadFile);
 	return 0;
 }
 

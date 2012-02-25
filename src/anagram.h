@@ -49,4 +49,11 @@ unsigned int _anagrams(anagram_node * node,
 		char * buf, unsigned int buf_len,
 		found_callback cb, void * data);
 
+/* =================================================
+ * Convenience functions
+ * ================================================= */
+
+/* Load in a file of words */
+void loadFile(anagram_node * node, const char * path);
+
 #endif

@@ -168,3 +168,11 @@ unsigned int _anagrams(anagram_node * node,
 		return sum;
 	}
 }
+
+void loadFile(anagram_node * node, const char * path) {
+	FILE * f = fopen(path, "r");
+	char word[1024];
+	while (fscanf(f, "%s", word) != EOF) {
+		insert(node, word);
+	}
+}
