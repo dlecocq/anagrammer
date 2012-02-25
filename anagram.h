@@ -24,6 +24,9 @@ void initialize_node(anagram_node * node, anagram_node * parent);
 /* Destructinate it */
 void destruct_node(anagram_node * node);
 
+/* Is this node a leaf? */
+int leaf(const anagram_node * node);
+
 /* Insert a string */
 anagram_node * _insert(anagram_node * node, const char * str, unsigned int len);
 anagram_node *  insert(anagram_node * node, const char * str);

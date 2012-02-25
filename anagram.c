@@ -10,6 +10,10 @@
  * string. */
 const unsigned int base = 97;
 
+int __comparator(const void* a, const void* b) {
+	return (*(int*)a - *(int*)b);
+}
+
 void initialize_node(anagram_node * node, anagram_node * parent) {
 	unsigned int i = 0;
 	for (i = 0; i < 26; ++i) {
@@ -24,8 +28,18 @@ void destruct_node(anagram_node * node) {
 	for (i = 0; i < 26; ++i) {
 		if (node->nodes[i] != NULL) {
 			destruct_node(node->nodes[i]);
+			free(node->nodes[i]);
+			node->nodes[i] = NULL;
 		}
 	}
+}
+
+int leaf(const anagram_node * node) {
+	unsigned int sum = 0, index = 0;
+	for (index = 0; index < 26; ++index) {
+		sum += (node->nodes[index] != NULL);
+	}
+	return sum == 0;
 }
 
 anagram_node * insert(anagram_node * node, const char * str) {
@@ -55,7 +69,27 @@ void delete(anagram_node * node, const char * str) {
 }
 
 void _delete(anagram_node * node, const char * str, unsigned int len) {
-	return;
+	if (len == 0) {
+		node->valid = 0;
+	} else {
+		unsigned int index = (unsigned int)(str[0]) - base;
+		if (node->nodes[index] == NULL) {
+			return;
+		} else {
+			if (len == 1) {
+				_delete(node->nodes[index], NULL, len-1);
+			} else {
+				_delete(node->nodes[index], (const char*)(&str[1]), len-1);
+			}
+			/* After we've deleted from the subtrees, we should 
+			 * see if the node we just deleted was a leaf. If so,
+			 * we can prune this one! */
+			if (leaf(node->nodes[index])) {
+				free(node->nodes[index]);
+				node->nodes[index] = NULL;
+			}
+		}
+	}
 }
 
 int contains(anagram_node * node, const char * str) {
@@ -79,9 +113,10 @@ int _contains(anagram_node * node, const char * str, unsigned int len) {
 
 unsigned int anagrams(anagram_node * node, const char * str, found_callback cb) {
 	unsigned int len = strlen(str);
-	// Make a copy of the string that we can modify
+	// Make a copy of the string that we can modify, and then sort it
 	char * _str = (char*)(malloc(len));
 	memcpy(_str, str, len);
+	qsort(_str, len, sizeof(char), __comparator);
 	// Make a buffer where we'll store the string
 	char * _buf = (char*)(malloc(len + 1));
 	// Return

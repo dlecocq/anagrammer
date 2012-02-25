@@ -12,16 +12,8 @@ int main() {
 	initialize_node(&root, NULL);
 	
 	insert(&root, "hello");
-	insert(&root, "he");
-	insert(&root, "hell");
-	
-	if (contains(&root, "hello")) {
-		printf("Contains hello.\n");
-	} else {
-		printf("Does not contain hello.\n");
-	}
-	
-	printf("Found %i\n", anagrams(&root, "hello", cb));
+		
+	printf("Found %i\n", anagrams(&root, "ollhe", cb));
 	
 	return 0;
 }

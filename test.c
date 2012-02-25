@@ -13,6 +13,7 @@ static char * test_insert_contains() {
 	mu_assert("Doesn't contain before insertion", !contains(&root, "hello"));
 	insert(&root, "hello");
 	mu_assert("Contains after insertion", contains(&root, "hello"));
+	destruct_node(&root);
 	return 0;
 }
 
@@ -23,6 +24,7 @@ static char * test_insert_multiple() {
 	insert(&root, "hell");
 	insert(&root, "he");
 	mu_assert("Contains multiple", contains(&root, "hello") && contains(&root, "hell") && contains(&root, "he"));
+	destruct_node(&root);
 	return 0;
 }
 
@@ -34,6 +36,41 @@ static char * test_anagrams() {
 	insert(&root, "hell");
 	insert(&root, "he");
 	mu_assert("Finds anagrams", anagrams(&root, "hello", noop) == 3);
+	destruct_node(&root);
+	return 0;
+}
+
+static char * test_leaf() {
+	anagram_node root;
+	initialize_node(&root, NULL);
+	mu_assert("Empty node is leaf", leaf(&root));
+	insert(&root, "hello");
+	mu_assert("Full node is not leaf", !leaf(&root));
+	destruct_node(&root);
+	return 0;
+}
+
+static char * test_delete() {
+	anagram_node root;
+	initialize_node(&root, NULL);
+	mu_assert("Empty node is leaf", leaf(&root));
+	insert(&root, "hello");
+	mu_assert("Full node is not leaf", !leaf(&root));
+	delete(&root, "hello");
+	mu_assert("Deleted node is leaf", leaf(&root));
+	destruct_node(&root);
+	return 0;
+}
+
+// Make sure we never report duplicates in anagram searches
+static char * test_duplicates() {
+	anagram_node root;
+	initialize_node(&root, NULL);
+	insert(&root, "hello");
+	mu_assert("Exactly one anagram found when sorted", anagrams(&root, "ehllo", noop) == 1);
+	mu_assert("Exactly one anagram found when unsorted", anagrams(&root, "lehlo", noop) == 1);
+	mu_assert("Exactly one anagram found when unsorted", anagrams(&root, "ollhe", noop) == 1);
+	destruct_node(&root);
 	return 0;
 }
 
@@ -41,6 +78,9 @@ static char * all_tests() {
 	mu_run_test(test_insert_contains);
 	mu_run_test(test_insert_multiple);
 	mu_run_test(test_anagrams);
+	mu_run_test(test_leaf);
+	mu_run_test(test_delete);
+	mu_run_test(test_duplicates);
 	return 0;
 }
 
