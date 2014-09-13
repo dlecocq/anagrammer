@@ -186,6 +186,7 @@ void loadFile(anagram_node * node, const char * path) {
 	FILE * f = fopen(path, "r");
 	char word[1024];
 	while (fscanf(f, "%s", word) != EOF) {
+    	printf("Loaded %s\n", word);
 		insert(node, word);
 	}
 }
